@@ -1,0 +1,89 @@
+criterion_args:
+  NAME: Poly1FocalLoss
+datatransforms:
+  kwargs:
+    angle:
+    - 0
+    - 1.0
+    - 0
+    gravity_dim: 1
+    jitter_clip: 0.005
+    jitter_sigma: 0.001
+    scale:
+    - 0.8
+    - 1.2
+  train:
+  - PointsToTensor
+  - PointCloudScaling
+  - PointCloudCenterAndNormalize
+  - PointCloudJitter
+  - ChromaticDropGPU
+  val:
+  - PointsToTensor
+  - PointCloudCenterAndNormalize
+decay_epochs:
+- 210
+- 270
+decay_rate: 0.1
+epochs: 300
+feature_keys: pos
+lr: 0.001
+min_lr: null
+model:
+  NAME: BasePosePartSeg
+  cls_args:
+    NAME: SegHead
+    global_feat: max,avg
+    in_channels: null
+    norm_args:
+      norm: bn
+    num_classes: 50
+  decoder_args:
+    NAME: PointNextPartDecoder
+    cls_map: curvenet
+  encoder_args:
+    NAME: PointNextEncoder
+    act_args:
+      act: relu
+    aggr_args:
+      feature_type: dp_fj
+    blocks:
+    - 1
+    - 1
+    - 1
+    - 1
+    - 1
+    conv_args:
+      order: conv-norm-act
+    expansion: 4
+    group_args:
+      NAME: ballquery
+      normalize_dp: true
+    in_channels: 3
+    norm_args:
+      norm: bn
+    nsample: 32
+    radius: 0.1
+    radius_scaling: 2.5
+    reduction: max
+    sa_layers: 3
+    sa_use_res: true
+    strides:
+    - 1
+    - 2
+    - 2
+    - 2
+    - 2
+    width: 64
+  pose_args:
+    NAME: EIP
+    regress_args:
+      NAME: EIPTable
+      bins: 1000
+      out_features: 2
+  use_normal: false
+optimizer:
+  NAME: adamw
+  weight_decay: 0.0001
+sched: multistep
+warmup_epochs: 0

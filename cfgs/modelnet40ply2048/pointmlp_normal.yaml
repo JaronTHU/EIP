@@ -1,0 +1,63 @@
+epochs: 300
+lr: 0.1
+min_lr: 0.005
+model:
+  NAME: BasePoseClsNormal
+  cls_args:
+    NAME: ClsHead
+    mlps:
+    - 512
+    - 256
+    norm_args:
+      norm: bn1d
+    num_classes: 40
+  encoder_args:
+    NAME: PointMLPEncoder
+    activation: relu
+    bias: false
+    dim_expansion:
+    - 2
+    - 2
+    - 2
+    - 2
+    embed_dim: 64
+    groups: 1
+    in_channels: 6
+    k_neighbors:
+    - 24
+    - 24
+    - 24
+    - 24
+    normalize: anchor
+    num_classes: 40
+    points: 1024
+    pos_blocks:
+    - 2
+    - 2
+    - 2
+    - 2
+    pre_blocks:
+    - 2
+    - 2
+    - 2
+    - 2
+    reducers:
+    - 2
+    - 2
+    - 2
+    - 2
+    res_expansion: 1.0
+    use_xyz: false
+  pose_args:
+    NAME: EIP
+    regress_args:
+      NAME: EIPTable
+      bins: 1000
+      out_features: 2
+optimizer:
+  NAME: momentum
+  momentum: 0.9
+  weight_decay: 0.0002
+sched: cosine
+t_max: 300
+warmup_epochs: 0

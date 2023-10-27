@@ -1,0 +1,141 @@
+criterion_args:
+  NAME: Poly1FocalLoss
+datatransforms:
+  kwargs:
+    angle:
+    - 0
+    - 1.0
+    - 0
+    gravity_dim: 1
+    jitter_clip: 0.005
+    jitter_sigma: 0.001
+    scale:
+    - 0.8
+    - 1.2
+  train:
+  - PointsToTensor
+  - PointCloudScaling
+  - PointCloudCenterAndNormalize
+  - PointCloudJitter
+  - ChromaticDropGPU
+  val:
+  - PointsToTensor
+  - PointCloudCenterAndNormalize
+decay_epochs:
+- 210
+- 270
+decay_rate: 0.1
+epochs: 300
+feature_keys: pos,x
+lr: 0.001
+min_lr: null
+model:
+  NAME: BasePosePartSeg
+  activation: relu
+  bias: true
+  cls_dim: 64
+  de_blocks:
+  - 4
+  - 4
+  - 4
+  - 4
+  de_dims:
+  - 512
+  - 256
+  - 128
+  - 128
+  dim_expansion:
+  - 2
+  - 2
+  - 2
+  - 2
+  embed_dim: 64
+  encoder_args:
+    NAME: PointMLPPartSeg
+    activation: relu
+    bias: true
+    cls_dim: 64
+    de_blocks:
+    - 4
+    - 4
+    - 4
+    - 4
+    de_dims:
+    - 512
+    - 256
+    - 128
+    - 128
+    dim_expansion:
+    - 2
+    - 2
+    - 2
+    - 2
+    embed_dim: 64
+    gmp_dim: 64
+    groups: 1
+    in_channels: 6
+    k_neighbors:
+    - 32
+    - 32
+    - 32
+    - 32
+    normalize: anchor
+    num_classes: 50
+    points: 2048
+    pos_blocks:
+    - 2
+    - 2
+    - 2
+    - 2
+    pre_blocks:
+    - 2
+    - 2
+    - 2
+    - 2
+    reducers:
+    - 4
+    - 4
+    - 4
+    - 4
+    res_expansion: 1.0
+    use_xyz: true
+  gmp_dim: 64
+  groups: 1
+  in_channels: 6
+  k_neighbors:
+  - 32
+  - 32
+  - 32
+  - 32
+  normalize: anchor
+  num_classes: 50
+  points: 2048
+  pos_blocks:
+  - 2
+  - 2
+  - 2
+  - 2
+  pose_args:
+    NAME: EIP
+    regress_args:
+      NAME: EIPTable
+      bins: 1000
+      out_features: 2
+  pre_blocks:
+  - 2
+  - 2
+  - 2
+  - 2
+  reducers:
+  - 4
+  - 4
+  - 4
+  - 4
+  res_expansion: 1.0
+  use_normal: true
+  use_xyz: true
+optimizer:
+  NAME: adamw
+  weight_decay: 0.0001
+sched: multistep
+warmup_epochs: 0

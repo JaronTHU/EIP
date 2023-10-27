@@ -1,0 +1,59 @@
+epochs: 1000
+lr: 0.001
+model:
+  NAME: BasePoseCls
+  append_height: false
+  cls_args:
+    NAME: ClsHead
+    mlps:
+    - 512
+    - 256
+    norm_args:
+      norm: bn1d
+    num_classes: 15
+  encoder_args:
+    NAME: PointNextEncoder
+    act_args:
+      act: relu
+    aggr_args:
+      feature_type: dp_fj
+      reduction: max
+    blocks:
+    - 1
+    - 1
+    - 1
+    - 1
+    - 1
+    - 1
+    conv_args:
+      order: conv-norm-act
+    expansion: 4
+    group_args:
+      NAME: ballquery
+      normalize_dp: true
+    in_channels: 3
+    norm_args:
+      norm: bn
+    nsample: 32
+    radius: 0.15
+    radius_scaling: 1.5
+    sa_layers: 2
+    sa_use_res: true
+    strides:
+    - 1
+    - 2
+    - 2
+    - 2
+    - 2
+    - 1
+    width: 32
+  pose_args:
+    NAME: EIP
+    regress_args:
+      NAME: EIPTable
+      bins: 1000
+      out_features: 2
+optimizer:
+  NAME: adamw
+  weight_decay: 0.05
+tmax: 1000

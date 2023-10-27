@@ -1,0 +1,52 @@
+model:
+  NAME: BasePoseCls
+  append_height: false
+  cls_args:
+    NAME: ClsHead
+    mlps:
+    - 512
+    - 256
+    norm_args:
+      norm: bn1d
+    num_classes: 15
+  encoder_args:
+    NAME: PointMLPEncoder
+    activation: relu
+    bias: false
+    dim_expansion:
+    - 2
+    - 2
+    - 2
+    - 2
+    embed_dim: 64
+    groups: 1
+    in_channels: 3
+    k_neighbors:
+    - 24
+    - 24
+    - 24
+    - 24
+    normalize: anchor
+    pos_blocks:
+    - 2
+    - 2
+    - 2
+    - 2
+    pre_blocks:
+    - 2
+    - 2
+    - 2
+    - 2
+    reducers:
+    - 2
+    - 2
+    - 2
+    - 2
+    res_expansion: 1.0
+    use_xyz: false
+  pose_args:
+    NAME: EIP
+    regress_args:
+      NAME: EIPTable
+      bins: 1000
+      out_features: 2
